@@ -15,7 +15,7 @@ public class StartPanel extends JPanel {
     private JLabel label;
     private PlayerPanel playerPanel;
     private int fontSize = 25;
-    public static boolean soundEnabled = true; // Domyślnie dźwięki są włączone
+    public static boolean soundEnabled = true;
     private JDialog settingsDialog;
 
     public StartPanel() {
@@ -26,9 +26,9 @@ public class StartPanel extends JPanel {
         frame = new JFrame("Gra");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 750);
-        frame.setLocationRelativeTo(null);  // Ustawienie okna na środku ekranu
+        frame.setLocationRelativeTo(null);
 
-        // Ładowanie obrazu tła
+
         ImageIcon backgroundImage = new ImageIcon("src/GameInterface/library.jpg");
         JLabel backgroundLabel = new JLabel(backgroundImage);
         backgroundLabel.setLayout(new GridBagLayout());
@@ -40,7 +40,7 @@ public class StartPanel extends JPanel {
         gbc.insets = new Insets(20, 20, 20, 20);
 
         label = new JLabel("Witaj w grze 'Kółko i Krzyżyk'!");
-        label.setFont(new Font("SANS_SERIF", Font.BOLD, fontSize)); // Ustawienie rozmiaru tekstu
+        label.setFont(new Font("SANS_SERIF", Font.BOLD, fontSize));
         gbc.gridy++;
         startPanel.add(label, gbc);
 
@@ -54,21 +54,20 @@ public class StartPanel extends JPanel {
                 frame.add(playerPanel);
                 frame.revalidate();
                 frame.repaint();
-                playSound(); // Odtwarzanie dźwięku po naciśnięciu przycisku "Start"
+                playSound();
             }
         });
         gbc.gridy++;
         startPanel.add(startButton, gbc);
 
-        // Dodanie przycisku ustawień
+
         JButton settingsButton = new JButton("⚙\uFE0F Ustawienia");
         settingsButton.setFont(new Font("SANS_SERIF", Font.BOLD, 20));
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Otwórz okno ustawień i zaktualizuj ustawienia po zamknięciu
                 showSettingsDialog();
-                playSound(); // Odtwarzanie dźwięku po naciśnięciu przycisku "Ustawienia"
+                playSound();
             }
         });
         gbc.gridy++;
@@ -85,10 +84,8 @@ public class StartPanel extends JPanel {
         gbc.gridy++;
         startPanel.add(endButton, gbc);
 
-        // Dodanie panelu startowego na tło
         backgroundLabel.add(startPanel);
 
-        // Dodanie tła do ramki
         frame.setContentPane(backgroundLabel);
         frame.setVisible(true);
     }
@@ -99,48 +96,41 @@ public class StartPanel extends JPanel {
         settingsDialog.setLocationRelativeTo(frame);
         settingsDialog.setLayout(new GridLayout(3, 1));
 
-        // Rozmiar tekstu
         JLabel fontSizeLabel = new JLabel("Wybierz rozmiar tekstu:");
         fontSizeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         settingsDialog.add(fontSizeLabel);
 
-        JSlider fontSizeSlider = new JSlider(10, 30, fontSize); // Ustawienie aktualnego rozmiaru tekstu
+        JSlider fontSizeSlider = new JSlider(10, 30, fontSize);
         fontSizeSlider.setMajorTickSpacing(5);
         fontSizeSlider.setMinorTickSpacing(1);
         fontSizeSlider.setPaintTicks(true);
         fontSizeSlider.setPaintLabels(true);
         settingsDialog.add(fontSizeSlider);
 
-        // Opcja dźwięku
         JCheckBox soundCheckBox = new JCheckBox("Włącz dźwięki");
-        soundCheckBox.setSelected(soundEnabled); // Ustawienie aktualnej opcji dźwięku
+        soundCheckBox.setSelected(soundEnabled);
         settingsDialog.add(soundCheckBox);
 
-        // Przycisk zatwierdzenia ustawień
         JButton applyButton = new JButton("Zastosuj");
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Pobierz wybrane ustawienia
                 fontSize = fontSizeSlider.getValue();
-                label.setFont(new Font("SANS_SERIF", Font.BOLD, fontSize)); // Zastosuj nowy rozmiar tekstu
+                label.setFont(new Font("SANS_SERIF", Font.BOLD, fontSize));
 
-                soundEnabled = soundCheckBox.isSelected(); // Zastosuj nową opcję dźwięku
+                soundEnabled = soundCheckBox.isSelected();
 
-                // Zamknij okno dialogowe
                 settingsDialog.dispose();
             }
         });
         settingsDialog.add(applyButton);
 
-        // Wyświetlenie okna dialogowego
         settingsDialog.setVisible(true);
     }
 
     public static void playSound() {
         if (soundEnabled) {
             try {
-                // Ładowanie pliku dźwiękowego
                 File soundFile = new File("src/GameInterface/click.wav");
                 if (!soundFile.exists()) {
                     System.out.println("Plik dźwiękowy nie istnieje.");
@@ -151,7 +141,6 @@ public class StartPanel extends JPanel {
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
 
-                // Odtwarzanie dźwięku
                 clip.start();
             } catch (UnsupportedAudioFileException ex) {
                 System.out.println("Nieobsługiwany format pliku dźwiękowego.");
